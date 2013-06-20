@@ -11,3 +11,5 @@ configure
 pom.xml
 *.iml
 .idea
+.gradle
+src/generated

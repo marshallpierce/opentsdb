@@ -1,0 +1,30 @@
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'com.google.guava:guava:13.0.1'
+  compile 'org.slf4j:slf4j-api:1.7.2'
+  compile 'org.hbase:asynchbase:1.4.1'
+
+  compile 'com.google.gwt:gwt-user:2.5.0'
+  compile 'com.google.gwt:gwt-dev:2.5.0'
+
+  compile 'ch.qos.logback:logback-classic:1.0.9'
+
+  testCompile 'junit:junit:4.11'
+  testCompile 'org.mockito:mockito-core:1.9.5'
+  testCompile 'org.powermock:powermock-mockito-release-full:1.5'
+}
+
+task genBuildData(type: Exec) {
+  ext.destinationDir = 'src/generated/java'
+  commandLine './build-aux/gen_build_data.sh', "$destinationDir/net/opentsdb/BuildData.java", 'net.opentsdb', 'BuildData'
+}
+
+compileJava {
+  dependsOn genBuildData
+  source genBuildData.destinationDir
+}
